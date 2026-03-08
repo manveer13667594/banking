@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - BankName</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .admin-tabs { display:flex; gap:.5rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+        .admin-tab  { padding:.5rem 1.25rem; border-radius:.5rem; border:1px solid #d1d5db; background:white; cursor:pointer; font-weight:500; }
+        .admin-tab.active { background:#1f2937; color:white; border-color:#1f2937; }
+        .admin-panel { display:none; }
+        .admin-panel.active { display:block; }
+        .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:1rem; margin-bottom:1.5rem; }
+        .stat-card { background:white; border-radius:.75rem; padding:1rem; text-align:center; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+        .stat-card .stat-val { font-size:1.75rem; font-weight:700; color:#1f2937; }
+        .stat-card .stat-lbl { font-size:.8rem; color:#6b7280; margin-top:.25rem; }
+        .data-table { width:100%; border-collapse:collapse; background:white; border-radius:.75rem; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+        .data-table th { background:#f9fafb; padding:.75rem 1rem; text-align:left; font-size:.8rem; color:#6b7280; border-bottom:1px solid #e5e7eb; }
+        .data-table td { padding:.75rem 1rem; font-size:.85rem; border-bottom:1px solid #f3f4f6; }
+        .data-table tr:last-child td { border-bottom:none; }
+        .badge { padding:.2rem .6rem; border-radius:999px; font-size:.75rem; font-weight:600; }
+        .badge-pending  { background:#fef3c7; color:#92400e; }
+        .badge-active   { background:#dcfce7; color:#166534; }
+        .badge-rejected { background:#fee2e2; color:#991b1b; }
+        .badge-open     { background:#fef3c7; color:#92400e; }
+        .badge-resolved { background:#dcfce7; color:#166534; }
+        .btn-sm { padding:.3rem .75rem; border-radius:.4rem; border:none; cursor:pointer; font-size:.8rem; font-weight:500; }
+        .btn-approve { background:#16a34a; color:white; }
+        .btn-reject  { background:#dc2626; color:white; }
+        .btn-reply   { background:#3b82f6; color:white; }
+        .section-card { background:white; border-radius:.75rem; padding:1.25rem; margin-bottom:1rem; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+        .reply-form { margin-top:.75rem; display:none; }
+        .reply-form textarea { width:100%; padding:.5rem; border:1px solid #d1d5db; border-radius:.5rem; resize:vertical; font-size:.85rem; }
+    </style>
+</head>
+<body class="dashboard-page">
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-header"><div class="logo">
+            <svg class="logo-icon" viewBox="0 0 40 40"><polygon points="20,5 35,15 35,25 20,35 5,25 5,15" fill="white"/></svg>
+            <span>BankName Admin</span>
+        </div></div>
+        <nav class="sidebar-menu">
+            <a href="admin.html" class="menu-item active"><span class="menu-icon">📊</span><span>Dashboard</span></a>
+            <a href="#" class="menu-item" onclick="showPanel('loans')"><span class="menu-icon">📋</span><span>Loans</span></a>
+            <a href="#" class="menu-item" onclick="showPanel('support')"><span class="menu-icon">🎫</span><span>Support Tickets</span></a>
+            <a href="#" class="menu-item" onclick="showPanel('users')"><span class="menu-icon">👥</span><span>Users</span></a>
+            <a href="#" class="menu-item" onclick="showPanel('transactions')"><span class="menu-icon">💸</span><span>Transactions</span></a>
+            <a href="#" class="menu-item" onclick="adminLogout()"><span class="menu-icon">🚪</span><span>Logout</span></a>
+        </nav>
+    </aside>
+    <main class="main-content">
+        <header class="dashboard-header">
+            <div class="header-left"><h1 id="panel-title">Admin Dashboard</h1></div>
+            <div class="header-right">
+                <span style="font-size:.85rem;color:#6b7280">Logged in as <strong id="admin-name">Admin</strong></span>
+            </div>
+        </header>
+        <div class="content-wrapper">
+
+            <!-- Stats (always visible) -->
+            <div class="stat-grid" id="stats-grid">
+                <div class="stat-card"><div class="stat-val" id="s-users">-</div><div class="stat-lbl">Total Customers</div></div>
+                <div class="stat-card"><div class="stat-val" id="s-accounts">-</div><div class="stat-lbl">Total Accounts</div></div>
+                <div class="stat-card"><div class="stat-val" id="s-txns">-</div><div class="stat-lbl">Transactions</div></div>
+                <div class="stat-card"><div class="stat-val" id="s-loans">-</div><div class="stat-lbl">Pending Loans</div></div>
+                <div class="stat-card"><div class="stat-val" id="s-tickets">-</div><div class="stat-lbl">Open Tickets</div></div>
+                <div class="stat-card"><div class="stat-val" id="s-balance">-</div><div class="stat-lbl">Total Deposits</div></div>
+            </div>
+
+            <!-- Loans Panel -->
+            <div id="panel-loans" class="admin-panel">
+                <h3 style="margin-bottom:1rem">Loan Applications</h3>
+                <div id="loans-list"></div>
+            </div>
+
+            <!-- Support Panel -->
+            <div id="panel-support" class="admin-panel">
+                <h3 style="margin-bottom:1rem">Support Tickets</h3>
+                <div id="tickets-list"></div>
+            </div>
+
+            <!-- Users Panel -->
+            <div id="panel-users" class="admin-panel">
+                <h3 style="margin-bottom:1rem">Customers</h3>
+                <div style="overflow-x:auto"><table class="data-table" id="users-table">
+                    <thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Status</th></tr></thead>
+                    <tbody></tbody>
+                </table></div>
+            </div>
+
+            <!-- Manual Transactions Panel -->
+            <div id="panel-transactions" class="admin-panel">
+                <h3 style="margin-bottom:1rem">Manual Transaction</h3>
+                <div class="section-card" style="max-width:480px">
+                    <p style="color:#6b7280;margin-bottom:1rem;font-size:.9rem">Manually deposit or withdraw funds from any account.</p>
+                    <div class="form-group">
+                        <label>Account ID</label>
+                        <input type="text" id="admin-account-id" placeholder="Paste account _id from database"
+                            style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:.5rem">
+                    </div>
+                    <div class="form-group">
+                        <label>Amount ($)</label>
+                        <input type="number" id="admin-amount" placeholder="Enter amount"
+                            style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:.5rem">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="admin-desc" placeholder="Reason for transaction"
+                            style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:.5rem">
+                    </div>
+                    <div style="display:flex;gap:.75rem;margin-top:1rem">
+                        <button class="btn-primary" onclick="adminManualTxn('deposit')">💰 Deposit</button>
+                        <button class="btn-secondary" onclick="adminManualTxn('withdraw')">💸 Withdraw</button>
+                    </div>
+                </div>
+                <div style="margin-top:1.5rem">
+                    <h4 style="margin-bottom:1rem">All Accounts</h4>
+                    <div style="overflow-x:auto"><table class="data-table" id="accounts-table">
+                        <thead><tr><th>Account #</th><th>Type</th><th>Owner</th><th>Balance</th><th>Account ID</th></tr></thead>
+                        <tbody></tbody>
+                    </table></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+<script>
+const API = 'http://localhost:5000/api';
+function tok() { return localStorage.getItem('token'); }
+function hdrs() { return { 'Content-Type':'application/json', 'Authorization':'Bearer '+tok() }; }
+
+function adminLogout() { localStorage.clear(); window.location.replace('../loginPage/login.html'); }
+
+function showPanel(name) {
+    document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+    const panel = document.getElementById('panel-' + name);
+    if (panel) panel.classList.add('active');
+    const titles = { loans:'Loan Applications', support:'Support Tickets', users:'Customers', transactions:'Manual Transactions' };
+    document.getElementById('panel-title').textContent = titles[name] || 'Admin Dashboard';
+    if (name === 'loans') loadLoans();
+    if (name === 'support') loadTickets();
+    if (name === 'users') loadUsers();
+    if (name === 'transactions') loadAccounts();
+}
+
+async function loadStats() {
+    const r = await fetch(API+'/admin/stats', { headers: hdrs() });
+    const d = await r.json();
+    document.getElementById('s-users').textContent    = d.totalUsers || 0;
+    document.getElementById('s-accounts').textContent = d.totalAccounts || 0;
+    document.getElementById('s-txns').textContent     = d.totalTransactions || 0;
+    document.getElementById('s-loans').textContent    = d.pendingLoans || 0;
+    document.getElementById('s-tickets').textContent  = d.openTickets || 0;
+    document.getElementById('s-balance').textContent  = '$' + Number(d.totalBalance||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+async function loadLoans() {
+    const r = await fetch(API+'/admin/loans', { headers: hdrs() });
+    const d = await r.json();
+    const container = document.getElementById('loans-list');
+    if (!d.loans || d.loans.length === 0) { container.innerHTML = '<p style="color:#6b7280">No loans found.</p>'; return; }
+    container.innerHTML = '';
+    d.loans.forEach(l => {
+        const statusBadge = `<span class="badge badge-${l.status}">${l.status}</span>`;
+        const div = document.createElement('div');
+        div.className = 'section-card';
+        div.style.display = 'flex'; div.style.justifyContent = 'space-between'; div.style.alignItems = 'flex-start';
+        div.innerHTML = `
+            <div>
+                <strong>${l.user?.fullName || 'Unknown'}</strong>
+                <span style="color:#6b7280;font-size:.8rem;margin-left:.5rem">${l.user?.email || ''}</span><br>
+                <span style="font-size:.85rem">Principal: <strong>$${l.principal.toLocaleString()}</strong> &nbsp;|&nbsp; 
+                Term: ${l.termMonths}mo &nbsp;|&nbsp; Rate: ${l.interestRate}% &nbsp;|&nbsp; EMI: $${l.emi} &nbsp;|&nbsp; Purpose: ${l.description||'N/A'}</span><br>
+                <span style="margin-top:.25rem;display:inline-block">${statusBadge}</span>
+                <span style="font-size:.75rem;color:#9ca3af;margin-left:.5rem">${new Date(l.createdAt).toLocaleDateString()}</span>
+            </div>
+            <div style="display:flex;gap:.5rem;flex-shrink:0">
+                ${l.status==='pending' ? `
+                    <button class="btn-sm btn-approve" onclick="loanAction('${l._id}','approve')">✓ Approve</button>
+                    <button class="btn-sm btn-reject"  onclick="loanAction('${l._id}','reject')">✗ Reject</button>` : ''}
+            </div>`;
+        container.appendChild(div);
+    });
+}
+
+async function loanAction(loanId, action) {
+    const r = await fetch(`${API}/admin/loans/${loanId}/${action}`, { method:'PATCH', headers: hdrs() });
+    const d = await r.json();
+    showNotif(d.message || action + ' done');
+    loadLoans(); loadStats();
+}
+
+async function loadTickets() {
+    const r = await fetch(API+'/admin/tickets', { headers: hdrs() });
+    const d = await r.json();
+    const container = document.getElementById('tickets-list');
+    if (!d.tickets || d.tickets.length === 0) { container.innerHTML = '<p style="color:#6b7280">No tickets found.</p>'; return; }
+    container.innerHTML = '';
+    d.tickets.forEach(t => {
+        const div = document.createElement('div');
+        div.className = 'section-card';
+        div.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                    <strong>${t.subject}</strong>
+                    <span style="color:#6b7280;font-size:.8rem;margin-left:.5rem">by ${t.user?.fullName||'?'} (${t.user?.email||''})</span><br>
+                    <p style="color:#374151;font-size:.85rem;margin:.35rem 0">${t.message}</p>
+                    <span class="badge badge-${t.status}">${t.status}</span>
+                    <span style="font-size:.75rem;color:#9ca3af;margin-left:.5rem">${new Date(t.createdAt).toLocaleDateString()}</span>
+                </div>
+                <button class="btn-sm btn-reply" onclick="toggleReplyForm('${t._id}')">💬 Reply</button>
+            </div>
+            ${t.adminReply ? `<div style="margin-top:.5rem;padding:.5rem;background:#eff6ff;border-radius:.5rem;font-size:.85rem"><strong>Your reply:</strong> ${t.adminReply}</div>` : ''}
+            <div class="reply-form" id="reply-${t._id}">
+                <textarea rows="3" placeholder="Type your reply here..." id="reply-text-${t._id}"></textarea>
+                <div style="display:flex;gap:.5rem;margin-top:.5rem">
+                    <select id="reply-status-${t._id}" style="padding:.35rem;border:1px solid #d1d5db;border-radius:.4rem;font-size:.8rem">
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                    <button class="btn-sm btn-approve" onclick="sendReply('${t._id}')">Send Reply</button>
+                </div>
+            </div>`;
+        container.appendChild(div);
+    });
+}
+
+function toggleReplyForm(id) {
+    const f = document.getElementById('reply-' + id);
+    f.style.display = f.style.display === 'none' || !f.style.display ? 'block' : 'none';
+}
+
+async function sendReply(ticketId) {
+    const reply  = document.getElementById('reply-text-' + ticketId).value;
+    const status = document.getElementById('reply-status-' + ticketId).value;
+    if (!reply.trim()) { showNotif('Reply cannot be empty', 'error'); return; }
+    const r = await fetch(`${API}/admin/tickets/${ticketId}/reply`, {
+        method:'PATCH', headers: hdrs(), body: JSON.stringify({ reply, status })
+    });
+    const d = await r.json();
+    showNotif(d.message || 'Reply sent');
+    loadTickets(); loadStats();
+}
+
+async function loadUsers() {
+    const r = await fetch(API+'/admin/users', { headers: hdrs() });
+    const d = await r.json();
+    const tbody = document.querySelector('#users-table tbody');
+    tbody.innerHTML = '';
+    (d.users || []).forEach(u => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${u.fullName}</td><td>${u.email}</td>
+            <td>${new Date(u.createdAt).toLocaleDateString()}</td>
+            <td><span class="badge ${u.isActive ? 'badge-active' : 'badge-rejected'}">${u.isActive ? 'Active' : 'Inactive'}</span></td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+async function loadAccounts() {
+    const r = await fetch(API+'/admin/accounts', { headers: hdrs() });
+    const d = await r.json();
+    const tbody = document.querySelector('#accounts-table tbody');
+    tbody.innerHTML = '';
+    (d.accounts || []).forEach(a => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${a.accountNumber}</td><td>${a.accountType}</td>
+            <td>${a.user?.fullName||'N/A'}</td>
+            <td>$${Number(a.balance).toLocaleString('en-US',{minimumFractionDigits:2})}</td>
+            <td style="font-family:monospace;font-size:.75rem">${a._id}</td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+async function adminManualTxn(type) {
+    const accountId = document.getElementById('admin-account-id').value.trim();
+    const amount    = parseFloat(document.getElementById('admin-amount').value);
+    const desc      = document.getElementById('admin-desc').value;
+    if (!accountId || !amount || amount <= 0) { showNotif('Fill all fields with valid values', 'error'); return; }
+    const r = await fetch(`${API}/admin/${type}`, {
+        method:'POST', headers: hdrs(), body: JSON.stringify({ accountId, amount, description: desc })
+    });
+    const d = await r.json();
+    if (r.ok) { showNotif(d.message || 'Done!'); loadAccounts(); loadStats(); }
+    else { showNotif(d.message || d.error || 'Failed', 'error'); }
+}
+
+function showNotif(msg, type='success') {
+    const n = document.createElement('div');
+    n.style.cssText = `position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;padding:.75rem 1.25rem;border-radius:.75rem;color:white;font-weight:500;font-size:.9rem;background:${type==='error'?'#dc2626':'#16a34a'}`;
+    n.textContent = msg; document.body.appendChild(n);
+    setTimeout(() => n.remove(), 3500);
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+    const role = localStorage.getItem('userRole');
+    if (role !== 'admin') { window.location.replace('../loginPage/login.html'); return; }
+    document.getElementById('admin-name').textContent = localStorage.getItem('userFullName') || 'Admin';
+    loadStats();
+});
+</script>
+</body>
+</html>

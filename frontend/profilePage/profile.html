@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile & Settings - BankName</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="dashboard-page">
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-header"><div class="logo">
+            <svg class="logo-icon" viewBox="0 0 40 40"><polygon points="20,5 35,15 35,25 20,35 5,25 5,15" fill="white"/></svg>
+            <span>BankName</span>
+        </div></div>
+        <nav class="sidebar-menu">
+            <a href="../dashboardPage/dashboard.html" class="menu-item"><span class="menu-icon">🏠</span><span>Dashboard</span></a>
+            <a href="../accountsPage/accounts.html" class="menu-item"><span class="menu-icon">👤</span><span>Accounts</span></a>
+            <a href="../transactionPage/transactions.html" class="menu-item"><span class="menu-icon">✓</span><span>Transactions</span></a>
+            <a href="../transferPage/transfer.html" class="menu-item"><span class="menu-icon">→</span><span>Transfer Money</span></a>
+            <a href="../cardsPage/cards.html" class="menu-item"><span class="menu-icon">💳</span><span>Cards</span></a>
+            <a href="../loansPage/loans.html" class="menu-item"><span class="menu-icon">📋</span><span>Loans</span></a>
+            <a href="profile.html" class="menu-item active"><span class="menu-icon">👥</span><span>Profile</span></a>
+            <a href="../supportPage/support.html" class="menu-item"><span class="menu-icon">❓</span><span>Support</span></a>
+            <a href="#" class="menu-item" onclick="handleLogout()"><span class="menu-icon">🚪</span><span>Logout</span></a>
+        </nav>
+    </aside>
+    <main class="main-content">
+        <header class="dashboard-header">
+            <div class="header-left"><h1>Profile & Settings</h1></div>
+            <div class="header-right"><div class="header-icons"><button class="icon-btn">🔔</button><button class="icon-btn">⚙️</button></div></div>
+        </header>
+        <div class="content-wrapper">
+            <section class="tabs-navigation">
+                <button class="tab-btn active" onclick="switchTab('personal')">Personal Information</button>
+                <button class="tab-btn" onclick="switchTab('security')">Security</button>
+                <button class="tab-btn" onclick="switchTab('kyc')">KYC Status</button>
+                <button class="tab-btn" onclick="switchTab('devices')">Devices</button>
+            </section>
+
+            <!-- Personal Tab -->
+            <div id="personal-tab" class="tab-content active">
+                <div class="settings-card">
+                    <h3>Personal Information</h3>
+                    <form class="settings-form" onsubmit="handleProfileUpdate(event)">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="full-name" placeholder="Your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="email-address" placeholder="Your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="phone-number" placeholder="Your phone">
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input type="text" id="address" placeholder="Your address">
+                        </div>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Security Tab -->
+            <div id="security-tab" class="tab-content">
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3>Change Password</h3>
+                        <form class="settings-form" onsubmit="handlePasswordChange(event)">
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" id="current-pwd" placeholder="Enter current password" required>
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" id="new-pwd" placeholder="Enter new password (min 6 chars)" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="confirm-pwd" placeholder="Confirm new password" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Update Password</button>
+                        </form>
+                    </div>
+                    <div class="settings-card">
+                        <h3>Two-Factor Authentication</h3>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Authenticator App</h4>
+                                <p class="setting-description">Add extra security with an authenticator app.</p>
+                            </div>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                        </div>
+                    </div>
+                    <div class="settings-card full-width">
+                        <h3>Transaction Limits</h3>
+                        <div class="limit-item">
+                            <div class="limit-header"><label>Send Money Limit</label><span class="limit-value">$100,000</span></div>
+                            <div class="slider-container">
+                                <input type="range" min="0" max="100000" value="100000" class="limit-slider">
+                            </div>
+                        </div>
+                        <div class="limit-item">
+                            <div class="limit-header"><label>Pay Bills Limit</label><span class="limit-value">$50,000</span></div>
+                            <div class="slider-container">
+                                <input type="range" min="0" max="100000" value="50000" class="limit-slider">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KYC Tab -->
+            <div id="kyc-tab" class="tab-content">
+                <div class="settings-card">
+                    <h3>KYC Status</h3>
+                    <div class="kyc-status">
+                        <div class="status-item"><span class="status-label">Identity Verification:</span><span class="status-badge verified">✓ Verified</span></div>
+                        <div class="status-item"><span class="status-label">Address Verification:</span><span class="status-badge verified">✓ Verified</span></div>
+                        <div class="status-item"><span class="status-label">Income Verification:</span><span class="status-badge pending">⏳ Pending</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Devices Tab -->
+            <div id="devices-tab" class="tab-content">
+                <div class="settings-card">
+                    <h3>Active Devices</h3>
+                    <div class="devices-list">
+                        <div class="device-item">
+                            <div class="device-info"><span class="device-type">💻 Windows PC</span><p>Last active: Today</p></div>
+                            <span class="current-label">Current</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="../logicFile.js"></script>
+</body>
+</html>

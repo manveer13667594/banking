@@ -1,0 +1,10 @@
+
+/* ============ DASHBOARD PAGE ============ */
+.dashboard-page {
+    background-color: #f5f7fa;
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - BankName</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="dashboard-page">
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-header"><div class="logo">
+            <svg class="logo-icon" viewBox="0 0 40 40"><polygon points="20,5 35,15 35,25 20,35 5,25 5,15" fill="white"/></svg>
+            <span>BankName</span>
+        </div></div>
+        <nav class="sidebar-menu">
+            <a href="../dashboardPage/dashboard.html" class="menu-item"><span class="menu-icon">🏠</span><span>Dashboard</span></a>
+            <a href="../accountsPage/accounts.html" class="menu-item"><span class="menu-icon">👤</span><span>Accounts</span></a>
+            <a href="../transactionPage/transactions.html" class="menu-item"><span class="menu-icon">✓</span><span>Transactions</span></a>
+            <a href="../transferPage/transfer.html" class="menu-item"><span class="menu-icon">→</span><span>Transfer Money</span></a>
+            <a href="../cardsPage/cards.html" class="menu-item"><span class="menu-icon">💳</span><span>Cards</span></a>
+            <a href="../loansPage/loans.html" class="menu-item"><span class="menu-icon">📋</span><span>Loans</span></a>
+            <a href="../profilePage/profile.html" class="menu-item"><span class="menu-icon">👥</span><span>Profile</span></a>
+            <a href="support.html" class="menu-item active"><span class="menu-icon">❓</span><span>Support</span></a>
+            <a href="#" class="menu-item" onclick="handleLogout()"><span class="menu-icon">🚪</span><span>Logout</span></a>
+        </nav>
+    </aside>
+    <main class="main-content">
+        <header class="dashboard-header">
+            <div class="header-left"><h1>Support & Help</h1></div>
+            <div class="header-right"><div class="header-icons"><button class="icon-btn">🔔</button><button class="icon-btn">⚙️</button></div></div>
+        </header>
+        <div class="content-wrapper">
+
+            <!-- Quick Options -->
+            <section class="support-options">
+                <div class="option-card" onclick="handleStartChat()"><span class="option-icon">💬</span><h4>Live Chat</h4><p>Chat with our team</p></div>
+                <div class="option-card" onclick="handleCallSupport()"><span class="option-icon">📞</span><h4>Call Support</h4><p>1-800-BANK-NOW</p></div>
+                <div class="option-card" onclick="handleEmailSupport()"><span class="option-icon">📧</span><h4>Email Support</h4><p>support@bankname.com</p></div>
+                <div class="option-card" onclick="handleTicketStatus()"><span class="option-icon">🎫</span><h4>My Tickets</h4><p>View your tickets</p></div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="faq-section">
+                <h3>Frequently Asked Questions</h3>
+                <div class="faq-items">
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)"><span>How do I change my password?</span><span class="faq-arrow">▼</span></div>
+                        <div class="faq-answer"><p>Go to Profile &amp; Settings → Security tab → Change Password. Enter your current password and new password, then click Update Password.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)"><span>How do I deposit or withdraw money?</span><span class="faq-arrow">▼</span></div>
+                        <div class="faq-answer"><p>Visit the Accounts page. Each account card has Deposit and Withdraw buttons. Enter the amount and confirm. The balance updates immediately.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)"><span>How do I transfer money to another account?</span><span class="faq-arrow">▼</span></div>
+                        <div class="faq-answer"><p>Go to Transfer Money, select your source account, enter the receiver's full 12-digit account number in the Beneficiary field, enter the amount and click Review Transfer.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)"><span>What are the transfer limits?</span><span class="faq-arrow">▼</span></div>
+                        <div class="faq-answer"><p>Default daily transfer limit is $10,000. You can adjust this from Profile → Security → Transaction Limits. International transfers may have different regulatory limits.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)"><span>How do I apply for a loan?</span><span class="faq-arrow">▼</span></div>
+                        <div class="faq-answer"><p>Go to the Loans page and click "Apply for Loan". Fill in the principal amount, term, interest rate and purpose. Once submitted, an admin will review and approve your application.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)"><span>How long does a loan approval take?</span><span class="faq-arrow">▼</span></div>
+                        <div class="faq-answer"><p>Loan applications are typically reviewed within 1–3 business days. You can check the status on your Loans page. You will also receive a notification once a decision is made.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)"><span>How do I pay my loan EMI?</span><span class="faq-arrow">▼</span></div>
+                        <div class="faq-answer"><p>On the Loans page, active loans have a "Pay EMI" button. Select the account to deduct from, enter the payment amount, and confirm. The payment will appear in your transaction history.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)"><span>Is my account and data secure?</span><span class="faq-arrow">▼</span></div>
+                        <div class="faq-answer"><p>Yes. All data is encrypted in transit (HTTPS) and at rest. Passwords are hashed and never stored in plain text. We recommend enabling 2FA from the Security settings for extra protection.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)"><span>How do I download my bank statement?</span><span class="faq-arrow">▼</span></div>
+                        <div class="faq-answer"><p>Go to the Transactions page and use the CSV export button to download your statement. You can filter by date range and account before exporting.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)"><span>What should I do if I notice an unauthorized transaction?</span><span class="faq-arrow">▼</span></div>
+                        <div class="faq-answer"><p>Immediately submit a support ticket below with the transaction details. Our team will investigate within 24 hours. You can also call 1-800-BANK-NOW for urgent issues.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- My Tickets section -->
+            <section style="margin-top:2rem">
+                <h3 id="my-tickets-list-anchor">My Support Tickets</h3>
+                <div id="my-tickets-list" style="margin-top:1rem">
+                    <p style="color:#6b7280">Loading tickets...</p>
+                </div>
+            </section>
+
+            <!-- Submit Ticket -->
+            <section class="contact-support">
+                <h3>Still need help? Submit a ticket</h3>
+                <form class="support-form" onsubmit="handleSupportForm(event)">
+                    <div class="form-group">
+                        <label for="issue-type">Issue Type</label>
+                        <select id="issue-type" required>
+                            <option value="">Select issue type</option>
+                            <option value="technical">Technical Issue</option>
+                            <option value="account">Account Related</option>
+                            <option value="transaction">Transaction Issue</option>
+                            <option value="card">Card Related</option>
+                            <option value="loan">Loan Related</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" placeholder="Enter subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Describe your issue in detail" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary full-width">Submit Ticket</button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+</div>
+<script src="../logicFile.js"></script>
+</body>
+</html>

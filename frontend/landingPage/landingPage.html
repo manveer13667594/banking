@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BankName - Secure Digital Banking</title>
+    <link rel="stylesheet" href="landinPageCss.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 40 40">
+                    <polygon points="20,5 35,15 35,25 20,35 5,25 5,15" fill="#1e40af"/>
+                </svg>
+                <span class="logo-text">BankName</span>
+            </div>
+        <ul class="nav-menu">
+            <li><a href="#banking">Banking</a></li>
+            <li><a href="#business">Business</a></li>
+            <li><a href="#loans">Loans</a></li>
+            <li><a href="#cards">Cards</a></li>
+            <li><a href="#support">Support</a></li>
+    </ul>
+            <div class="nav-buttons">
+                <button class="login-btn">Login</button>
+                <button class="open-account-btn" >Open Account</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Secure Digital Banking</h1>
+            <p>Manage accounts, transfer money, track loans.</p>
+            <div class="hero-buttons">
+                <button class="open-account-btn">Open Account</button>
+                <button  id="loginBtn" class="login-btn" >Login</button>
+            </div>
+        </div>
+        <div class="hero-dashboard">
+            <div class="dashboard-card">
+                <div class="dashboard-container">
+                    <!-- Sidebar -->
+                    <div class="dashboard-sidebar">
+                        <div class="sidebar-logo">
+                            <svg viewBox="0 0 40 40">
+                                <polygon points="20,5 35,15 35,25 20,35 5,25 5,15" fill="white"/>
+                            </svg>
+                            <span>BankName</span>
+                        </div>
+                        <div class="sidebar-menu">
+                            <div class="sidebar-menu-item active">
+                                <span class="menu-icon">💎</span>
+                                <span>Account</span>
+                            </div>
+                            <div class="sidebar-menu-item">
+                                <span class="menu-icon">📊</span>
+                                <span>Dashboard</span>
+                            </div> 
+                            <div class="sidebar-menu-item ">
+                                <span class="menu-icon">💬</span>
+                                <span>Messages</span>
+                            </div>
+                            <div class="sidebar-menu-item">
+                                <span class="menu-icon">📋</span>
+                                <span>Loans</span>
+                            </div>
+                            <div class="sidebar-menu-item">
+                                <span class="menu-icon">💳</span>
+                                <span>Cards</span>
+                            </div>
+                            <div class="sidebar-menu-item">
+                                <span class="menu-icon">✓</span>
+                                <span>Support</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="dashboard-main">
+                        <div class="dashboard-top-bar">
+                            <h3>Welcome Back!</h3>
+                            <div class="dashboard-top-icons">
+                                <span class="top-icon">🔔</span>
+                                <span class="top-icon">✓</span>
+                                <span class="top-icon">⚙️</span>
+                                <span class="top-icon">📅</span>
+                            </div>
+                        </div>
+
+                        <div class="balance-section">
+                            <div class="balance-info">
+                                <label>Total Balance</label>
+                                <p class="balance-amount">$9,850</p>
+                            </div>
+                            <div class="card-visual-box"></div>
+                        </div>
+
+                        <h4>Recent Transactions</h4>
+                        <div class="transactions-container">
+                            <div class="transaction-row">
+                                <div class="transaction-icon shopping">🛍️</div>
+                                <span class="transaction-name">Shopping</span>
+                                <span class="transaction-amount negative">-$120.00</span>
+                            </div>
+                            <div class="transaction-row">
+                                <div class="transaction-icon salary">✓</div>
+                                <span class="transaction-name">Salary Credit</span>
+                                <span class="transaction-amount positive">+$2,500.00</span>
+                            </div>
+                            <div class="transaction-row">
+                                <div class="transaction-icon emi">📋</div>
+                                <span class="transaction-name">EMI Payment</span>
+                                <span class="transaction-amount negative">-$230.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="features-container">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 60 60">
+                        <circle cx="30" cy="30" r="25" fill="#e0f2fe"/>
+                        <path d="M30 15 L40 25 L40 40 Q40 45 35 45 L25 45 Q20 45 20 40 L20 25 Z" fill="#0284c7" stroke="#0284c7" stroke-width="2"/>
+                        <circle cx="30" cy="35" r="3" fill="#0284c7"/>
+                    </svg>
+                </div>
+                <h3>Secure Transactions</h3>
+                <p>Advanced encryption to protect your data.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 60 60">
+                        <circle cx="30" cy="30" r="25" fill="#fef3c7"/>
+                        <path d="M30 15 L40 20 L40 35 Q30 45 30 45 Q30 45 20 35 L20 20 Z" fill="#f59e0b" stroke="#f59e0b" stroke-width="2"/>
+                        <path d="M25 28 L30 33 L40 23" stroke="#f59e0b" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+                <h3>Instant Transfers</h3>
+                <p>Send money instantly, anytime.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 60 60">
+                        <circle cx="30" cy="30" r="25" fill="#dbeafe"/>
+                        <rect x="18" y="20" width="24" height="16" fill="#3b82f6" rx="2"/>
+                        <line x1="20" y1="30" x2="40" y2="30" stroke="white" stroke-width="1"/>
+                        <line x1="20" y1="34" x2="40" y2="34" stroke="white" stroke-width="1"/>
+                    </svg>
+                </div>
+                <h3>Loan Management</h3>
+                <p>Track and manage your loans easily.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 60 60">
+                        <circle cx="30" cy="30" r="25" fill="#f3e8ff"/>
+                        <rect x="15" y="20" width="30" height="20" fill="#a855f7" rx="2"/>
+                        <circle cx="25" cy="30" r="2" fill="white"/>
+                        <circle cx="35" cy="30" r="2" fill="white"/>
+                        <rect x="40" y="25" width="8" height="10" fill="#a855f7"/>
+                    </svg>
+                </div>
+                <h3>Card Controls</h3>
+                <p>Control your cards with ease.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <!-- Services Sections -->
+    <section id="banking" class="service-section">
+        <div class="service-container">
+            <h2>Banking</h2>
+            <p>Everyday banking made simple — checking and savings with secure online access, easy transfers, and clear account management tools.</p>
+        </div>
+    </section>
+
+    <section id="business" class="service-section">
+        <div class="service-container">
+            <h2>Business</h2>
+            <p>Business accounts and tools to help your company grow — merchant services, payroll support, and dedicated business banking features.</p>
+        </div>
+    </section>
+
+    <section id="loans" class="service-section">
+        <div class="service-container">
+            <h2>Loans</h2>
+            <p>Flexible loan options for personal or business needs — competitive rates, easy applications, and online repayment management.</p>
+        </div>
+    </section>
+
+    <section id="cards" class="service-section">
+        <div class="service-container">
+            <h2>Cards</h2>
+            <p>Credit and debit cards with powerful controls — instant lock, spending limits, e-statements, and rewards tailored to you.</p>
+        </div>
+    </section>
+
+    <section id="support" class="service-section">
+        <div class="service-container">
+            <h2>Support</h2>
+            <p>We're here to help 24/7 — chat, phone, and secure messaging for account support, dispute resolution, and guidance.</p>
+        </div>
+    </section>
+
+    <section class="trust-section">
+        <h2>Trusted & Certified Banking</h2>
+        <div class="trust-badges">
+            <div class="badge">
+                <svg viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="28" fill="#e8f4f8" stroke="#0284c7" stroke-width="2"/>
+                    <path d="M20 30 L28 38 L40 22" stroke="#0284c7" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </svg>
+                <span>Secure & Safe</span>
+            </div>
+            <div class="badge">
+                <svg viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="28" fill="#fff3cd" stroke="#f59e0b" stroke-width="2"/>
+                    <circle cx="30" cy="22" r="4" fill="#f59e0b"/>
+                    <path d="M30 26 L30 34 M26 30 L34 30" stroke="#f59e0b" stroke-width="2"/>
+                </svg>
+                <span>RBI Compliant</span>
+            </div>
+            <div class="badge">
+                <svg viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="28" fill="#e8f4f8" stroke="#0284c7" stroke-width="2"/>
+                    <text x="30" y="38" font-size="24" text-anchor="middle" fill="#0284c7" font-weight="bold">ISO</text>
+                </svg>
+                <span>ISO Certified</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <a href="#about">About</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+            <a href="#contact">Contact Us</a>
+        </div>
+    </footer>
+
+    <script src="landingPageJs.js"></script>
+</body>
+</html>

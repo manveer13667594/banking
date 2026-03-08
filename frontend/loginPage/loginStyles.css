@@ -1,0 +1,156 @@
+
+/* ============ LOGIN PAGE ============ */
+.login-page {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 2rem;
+}
+
+.login-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.login-logo {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-logo svg {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1rem;
+}
+.logo-icon{
+    margin-right: 30px;
+}
+
+.login-logo h1 {
+    font-size: 1.5rem;
+    color: #1e3a8a;
+    font-weight: 700;
+}
+
+.login-form {
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #1e40af;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.remember-me input {
+    width: auto;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: #1e40af;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #1e3a8a;
+}
+
+.login-btn-primary {
+    width: 100%;
+    padding: 0.85rem;
+    background-color: #16a34a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn-primary:hover {
+    background-color: #15803d;
+}
+
+.login-footer {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+.login-footer a {
+    color: #1e40af;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+
+
+/* Extra spacing for long forms */
+.login-form {
+    max-height: 100%;
+    /* overflow-y: auto; */
+    padding-right: 5px;
+}
+
+/* Optional scrollbar styling */
+.login-form::-webkit-scrollbar {
+    width: 6px;
+}
+.login-form::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 6px;
+}

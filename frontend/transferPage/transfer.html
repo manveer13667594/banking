@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Money - BankName</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 40 40">
+                        <polygon points="20,5 35,15 35,25 20,35 5,25 5,15" fill="white"/>
+                    </svg>
+                    <span>BankName</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="../dashboardPage/dashboard.html" class="menu-item" data-page="dashboard">
+                    <span class="menu-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../accountsPage/accounts.html" class="menu-item" data-page="accounts">
+                    <span class="menu-icon">👤</span>
+                    <span>Accounts</span>
+                </a>
+                <a href="../transactionPage/transactions.html" class="menu-item" data-page="transactions">
+                    <span class="menu-icon">✓</span>
+                    <span>Transactions</span>
+                </a>
+                <a href="../transferPage/transfer.html" class="menu-item active" data-page="transfer">
+                    <span class="menu-icon">→</span>
+                    <span>Transfer Money</span>
+                </a>
+                <a href="../cardsPage/cards.html" class="menu-item" data-page="cards">
+                    <span class="menu-icon">💳</span>
+                    <span>Cards</span>
+                </a>
+                <a href="../loansPage/loans.html" class="menu-item" data-page="loans">
+                    <span class="menu-icon">📋</span>
+                    <span>Loans</span>
+                </a>
+                <a href="../profilePage/profile.html" class="menu-item" data-page="profile">
+                    <span class="menu-icon">👥</span>
+                    <span>Profile</span>
+                </a>
+                <a href="../supportPage/support.html" class="menu-item" data-page="support">
+                    <span class="menu-icon">❓</span>
+                    <span>Support</span>
+                </a>
+                <a href="#" class="menu-item" onclick="handleLogout()">
+                    <span class="menu-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>Transfer Money</h1>
+                </div>
+                <div class="header-right">
+                    <div class="header-icons">
+                        <button class="icon-btn" title="Notifications">🔔</button>
+                        <button class="icon-btn" title="Messages">✓</button>
+                        <button class="icon-btn" title="Settings">⚙️</button>
+                        <button class="icon-btn" title="Calendar">📅</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Transfer Money Content -->
+            <div class="content-wrapper">
+                <div class="transfer-container">
+                    <div class="transfer-form-section">
+                        <h3>Send Money</h3>
+                        <form class="transfer-form" onsubmit="handleTransfer(event)">
+                            <div class="form-group">
+                                <label for="from-account">From Account</label>
+                                <select id="from-account" required>
+                                    <option value="">Select account</option>
+                                    <option value="savings">Savings Account - $12,850.75</option>
+                                    <option value="current">Current Account - $8,420.50</option>
+                                    <option value="investment">Investment Account - $25,300.00</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="transfer-type">Transfer Type</label>
+                                <select id="transfer-type" required>
+                                    <option value="">Select transfer type</option>
+                                    <option value="own">Own Account</option>
+                                    <option value="internal">Internal Transfer</option>
+                                    <option value="external">External Transfer</option>
+                                    <option value="international">International Transfer</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="beneficiary">Beneficiary/Account Number</label>
+                                <input type="text" id="beneficiary" placeholder="Enter account number or select beneficiary" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="amount">Amount</label>
+                                <div class="amount-input-group">
+                                    <span class="currency">$</span>
+                                    <input type="number" id="amount" placeholder="0.00" step="0.01" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Description/Remarks</label>
+                                <textarea id="description" placeholder="Enter transfer description" rows="3"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary full-width">Review Transfer</button>
+                        </form>
+                    </div>
+
+                    <div class="transfer-info-section">
+                        <div class="info-card">
+                            <h4>Recent Beneficiaries</h4>
+                            <div class="beneficiary-list">
+                                <div class="beneficiary-item" onclick="selectBeneficiary(this)">
+                                    <span class="beneficiary-name">Sarah Johnson</span>
+                                    <span class="beneficiary-account">****5678</span>
+                                </div>
+                                <div class="beneficiary-item" onclick="selectBeneficiary(this)">
+                                    <span class="beneficiary-name">Mike Williams</span>
+                                    <span class="beneficiary-account">****9012</span>
+                                </div>
+                                <div class="beneficiary-item" onclick="selectBeneficiary(this)">
+                                    <span class="beneficiary-name">Emma Davis</span>
+                                    <span class="beneficiary-account">****3456</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h4>Transfer Limits</h4>
+                            <div class="limit-info">
+                                <p><span class="label">Daily Limit:</span> <span class="value">$10,000</span></p>
+                                <p><span class="label">Used Today:</span> <span class="value">$2,150</span></p>
+                                <p><span class="label">Remaining:</span> <span class="value">$7,850</span></p>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h4>Fees</h4>
+                            <div class="fee-info">
+                                <p><span class="label">Internal Transfer:</span> <span class="value">Free</span></p>
+                                <p><span class="label">NEFT/RTGS:</span> <span class="value">₹2.50</span></p>
+                                <p><span class="label">International:</span> <span class="value">2.5%</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../logicFile.js"></script>
+</body>
+</html>

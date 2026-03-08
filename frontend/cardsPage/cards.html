@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cards Management - BankName</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 40 40">
+                        <polygon points="20,5 35,15 35,25 20,35 5,25 5,15" fill="white"/>
+                    </svg>
+                    <span>BankName</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="../dashboardPage/dashboard.html" class="menu-item" data-page="dashboard">
+                    <span class="menu-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../accountsPage/accounts.html" class="menu-item" data-page="accounts">
+                    <span class="menu-icon">👤</span>
+                    <span>Accounts</span>
+                </a>
+                <a href="../transactionPage/transactions.html" class="menu-item" data-page="transactions">
+                    <span class="menu-icon">✓</span>
+                    <span>Transactions</span>
+                </a>
+                <a href="../transferPage/transfer.html" class="menu-item" data-page="transfer">
+                    <span class="menu-icon">→</span>
+                    <span>Transfer Money</span>
+                </a>
+                <a href="cards.html" class="menu-item active" data-page="cards">
+                    <span class="menu-icon">💳</span>
+                    <span>Cards</span>
+                </a>
+                <a href="../loansPage/loans.html" class="menu-item" data-page="loans">
+                    <span class="menu-icon">📋</span>
+                    <span>Loans</span>
+                </a>
+                <a href="../profilePage/profile.html" class="menu-item" data-page="profile">
+                    <span class="menu-icon">👥</span>
+                    <span>Profile</span>
+                </a>
+                <a href="../supportPage/support.html" class="menu-item" data-page="support">
+                    <span class="menu-icon">❓</span>
+                    <span>Support</span>
+                </a>
+                <a href="#" class="menu-item" onclick="handleLogout()">
+                    <span class="menu-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>Cards Management</h1>
+                </div>
+                <div class="header-right">
+                    <div class="header-icons">
+                        <button class="icon-btn" title="Notifications">🔔</button>
+                        <button class="icon-btn" title="Messages">✓</button>
+                        <button class="icon-btn" title="Settings">⚙️</button>
+                        <button class="icon-btn" title="Calendar">📅</button>
+                    </div>
+                    <button class="btn-primary" onclick="handleNewCard()">New Card</button>
+                    <button class="btn-secondary" onclick="handleViewStatements()">View Statements</button>
+                </div>
+            </header>
+
+            <!-- Cards Management Content -->
+            <div class="content-wrapper">
+                <div class="cards-grid">
+                    <!-- Left Column - Card Visual -->
+                    <div class="card-visual-section">
+                        <div class="card-display">
+                            <div class="card-header-display">
+                                <span class="card-type">💳 Debit Card</span>
+                                <span class="card-label">Debit</span>
+                            </div>
+                            <div class="card-chip">💳</div>
+                            <div class="card-number-display">1234 56** **** 4321</div>
+                            <div class="card-footer-display">
+                                <div>
+                                    <p class="card-holder-name">JOHN DOE</p>
+                                </div>
+                                <div class="card-expiry-display">
+                                    <span>08 / 29</span>
+                                    <svg viewBox="0 0 60 30" class="visa-logo">
+                                        <text x="10" y="20" font-size="14" font-weight="bold" fill="#003366">VISA</text>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-details-section">
+                            <h3>Card Details</h3>
+                            <div class="detail-item">
+                                <span class="detail-icon">👤</span>
+                                <span class="detail-text">John Doe</span>
+                                <span class="detail-action">></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">💳</span>
+                                <div class="detail-with-copy">
+                                    <span class="detail-text">Card Number</span>
+                                    <span class="detail-value">1234 56** **** 4321</span>
+                                    <button class="copy-btn" onclick="copyToClipboard('1234 56** **** 4321')">📋</button>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <div class="detail-with-nav">
+                                    <div>
+                                        <span class="detail-text">Expiry Date</span>
+                                        <span class="detail-value">08 / 29</span>
+                                    </div>
+                                    <span class="nav-arrow">></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Card Settings -->
+                    <div class="card-settings-section">
+                        <div class="settings-box">
+                            <h3>Block Card</h3>
+                            <div class="setting-item with-toggle">
+                                <div>
+                                    <p class="setting-label">Unblock</p>
+                                    <p class="setting-desc">This card is currently active</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="settings-box">
+                            <h3>Card Details</h3>
+                            <div class="setting-item with-toggle">
+                                <div>
+                                    <p class="setting-label">Unblock</p>
+                                    <span class="toggle-on">🟢</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="settings-box full-width">
+                            <h3>Daily Spending Limit</h3>
+                            <div class="limit-display">
+                                <span class="limit-label">Daily Spending Limit</span>
+                                <span class="limit-amount">$5,000</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" min="0" max="10000" value="5000" class="limit-slider">
+                                <div class="slider-labels">
+                                    <span>$0</span>
+                                    <span>$0</span>
+                                    <span>$10,000</span>
+                                    <span>$10,00.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-box">
+                            <h3>Transaction Controls</h3>
+                            <div class="setting-item with-toggle">
+                                <div>
+                                    <p class="setting-label">Enable Online Usage</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item with-toggle">
+                                <div>
+                                    <p class="setting-label">Enable International Usage</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multiple Cards Section -->
+                <section class="multiple-cards">
+                    <h3>Your Other Cards</h3>
+                    <div class="cards-list">
+                        <div class="card-item">
+                            <div class="card-item-header">
+                                <span class="card-item-type">💳 Credit Card</span>
+                                <span class="card-item-number">****8765</span>
+                            </div>
+                            <button class="btn-manage" onclick="handleSelectCard()">Manage</button>
+                        </div>
+                        <div class="card-item">
+                            <div class="card-item-header">
+                                <span class="card-item-type">💳 Premium Card</span>
+                                <span class="card-item-number">****5432</span>
+                            </div>
+                            <button class="btn-manage" onclick="handleSelectCard()">Manage</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../logicFile.js"></script>
+</body>
+</html>

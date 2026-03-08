@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions - BankName</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 40 40">
+                        <polygon points="20,5 35,15 35,25 20,35 5,25 5,15" fill="white"/>
+                    </svg>
+                    <span>BankName</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="../dashboardPage/dashboard.html" class="menu-item" data-page="dashboard">
+                    <span class="menu-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../accountsPage/accounts.html" class="menu-item" data-page="accounts">
+                    <span class="menu-icon">👤</span>
+                    <span>Accounts</span>
+                </a>
+                <a href="../transactionPage/transactions.html" class="menu-item active" data-page="transactions">
+                    <span class="menu-icon">✓</span>
+                    <span>Transactions</span>
+                </a>
+                <a href="../transferPage/transfer.html" class="menu-item" data-page="transfer">
+                    <span class="menu-icon">→</span>
+                    <span>Transfer Money</span>
+                </a>
+                <a href="../cardsPage/cards.html" class="menu-item" data-page="cards">
+                    <span class="menu-icon">💳</span>
+                    <span>Cards</span>
+                </a>
+                <a href="../loansPage/loans.html" class="menu-item" data-page="loans">
+                    <span class="menu-icon">📋</span>
+                    <span>Loans</span>
+                </a>
+                <a href="../profilePage/profile.html" class="menu-item" data-page="profile">
+                    <span class="menu-icon">👥</span>
+                    <span>Profile</span>
+                </a>
+                <a href="../supportPage/support.html" class="menu-item" data-page="support">
+                    <span class="menu-icon">❓</span>
+                    <span>Support</span>
+                </a>
+                <a href="#" class="menu-item" onclick="handleLogout()">
+                    <span class="menu-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>Transactions</h1>
+                </div>
+                <div class="header-right">
+                    <div class="header-icons">
+                        <button class="icon-btn" title="Notifications">🔔</button>
+                        <button class="icon-btn" title="Messages">✓</button>
+                        <button class="icon-btn" title="Settings">⚙️</button>
+                        <button class="icon-btn" title="Calendar">📅</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Transactions Content -->
+            <div class="content-wrapper">
+                <!-- Filters -->
+                <section class="transactions-filters">
+                    <div class="filter-group">
+                        <!-- account selector inserted dynamically by JS -->
+                        <select id="transaction-account" class="filter-select">
+                            <option value="">Select account</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select class="filter-select">
+                            <option>Date Range</option>
+                            <option>Last 7 Days</option>
+                            <option>Last 30 Days</option>
+                            <option>Last 3 Months</option>
+                            <option>Custom</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <select class="filter-select">
+                            <option>Credit / Debit</option>
+                            <option>All</option>
+                            <option>Credit</option>
+                            <option>Debit</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <select class="filter-select">
+                            <option>Amount - .00</option>
+                            <option>Less than $100</option>
+                            <option>$100 - $500</option>
+                            <option>$500 - $1000</option>
+                            <option>More than $1000</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <input type="text" class="search-input" placeholder="Search...">
+                        <button class="search-btn">🔍</button>
+                    </div>
+
+                    <div class="export-buttons">
+                        <button class="btn-export">📄 Pedi</button>
+                        <button class="btn-export primary">📊 CSV</button>
+                    </div>
+                </section>
+
+                <!-- Transactions Table -->
+                <section class="transactions-table-section">
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Date ↕</th>
+                                <th>Description</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <th>Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- rows filled by JS -->
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Pagination -->
+                <section class="pagination">
+                    <button class="btn-pagination">← Previous</button>
+                    <span class="pagination-info">Page 1 of 5</span>
+                    <button class="btn-pagination">Next →</button>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../logicFile.js"></script>
+</body>
+</html>
