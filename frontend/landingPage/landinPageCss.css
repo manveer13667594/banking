@@ -419,29 +419,199 @@ body {
     font-size: 0.95rem;
 }
 
-/* Services / sections added to landing page */
+/* ── Services Wrapper ─────────────────────────────── */
+.services-wrapper {
+    background: #f0f4ff;
+    padding: 4rem 1.5rem;
+}
+
+.services-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+.service-icons{
+    width: 85px;
+}
+
+.services-label {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1e3a8a;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 0.9rem;
+}
+
+.services-header h2 {
+    font-size: 2rem;
+    color: #1e3a8a;
+    font-weight: 800;
+}
+
+/* ── Individual Service Section ───────────────────── */
 .service-section {
-    padding: 3rem 1rem;
     background: white;
-    border-top: 1px solid #eef2ff;
-}
-
-.service-container {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(30, 58, 138, 0.08);
+    margin-bottom: 2rem;
     max-width: 1000px;
-    margin: 0 auto;
-    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.service-container h2 {
+.service-section:last-child { margin-bottom: 0; }
+
+.service-section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(30, 58, 138, 0.13);
+}
+
+.service-inner {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 220px;
+}
+
+.service-section--reverse .service-inner {
+    grid-template-columns: 1fr 260px;
+}
+
+.service-section--reverse .service-visual {
+    order: 2;
+}
+
+/* ── Visual Panel ─────────────────────────────────── */
+.service-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 0;
+}
+
+.service-visual--blue   { background: linear-gradient(135deg, #6588e7 0%, #c2cee7 100%); }
+.service-visual--teal   { background: linear-gradient(135deg, #08a195 0%, #82ecde 100%); }
+.service-visual--indigo { background: linear-gradient(135deg, #6458e1 0%, #9ca4eb 100%); }
+.service-visual--green  { background: linear-gradient(135deg, #13d059 0%, #b8edcc 100%); }
+.service-visual--sky    { background: linear-gradient(135deg, #069bec 0%, #94d5f1 100%); }
+
+.service-icon-wrap {
+    position: relative;
+    z-index: 2;
+    width: 110px;
+    height: 110px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    backdrop-filter: blur(4px);
+}
+
+.service-icon-wrap svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Decorative dot grid */
+.service-bg-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.18) 1px, transparent 1px);
+    background-size: 18px 18px;
+    z-index: 1;
+}
+
+/* ── Content Panel ────────────────────────────────── */
+.service-content {
+    padding: 2.2rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.service-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #3b82f6;
+    margin-bottom: 0.5rem;
+}
+
+.service-content h2 {
     font-size: 1.6rem;
+    font-weight: 800;
     color: #1e3a8a;
     margin-bottom: 0.6rem;
+    line-height: 1.2;
 }
 
-.service-container p {
+.service-content p {
     color: #475569;
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    margin-bottom: 1.2rem;
+    max-width: 480px;
+}
+
+.service-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.service-features li {
+    font-size: 0.88rem;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.service-features .check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: #dcfce7;
+    color: #16a34a;
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 768px) {
+    .service-inner,
+    .service-section--reverse .service-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .service-section--reverse .service-visual {
+        order: 0;
+    }
+
+    .service-visual {
+        min-height: 140px;
+    }
+
+    .service-content {
+        padding: 1.5rem;
+    }
 }
 
 /* Trust Section */
@@ -642,4 +812,3 @@ body {
         font-size: 1.3rem;
     }
 }
-
