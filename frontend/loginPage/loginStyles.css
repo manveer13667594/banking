@@ -13,7 +13,11 @@
     max-width: 450px;
     padding: 2rem;
 }
-
+.login-img {
+    width: 200px;
+    height: 45px;
+    margin-bottom: 1rem;
+}
 .login-card {
     background: white;
     border-radius: 12px;

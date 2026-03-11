@@ -1,4 +1,4 @@
-# 🏦 BankName — Full-Stack Banking Web App
+# 🏦 PrimeBank — Full-Stack Banking Web App
 
 > **This project is built as a college project for learning purposes.**
 
@@ -192,8 +192,6 @@ Open `index.html` in a browser — or use **VS Code Live Server** for best resul
 3. You are redirected to the **Admin Panel**
 
 ---
-
-## 🔌 API Endpoints
 
 ### Auth
 | Method | Endpoint | Description |

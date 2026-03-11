@@ -104,7 +104,7 @@ window.addEventListener('scroll', function() {
 
 // Log page load
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('BankName landing page loaded successfully');
+    console.log('PrimeBank landing page loaded successfully');
 });
 
 // Prevent sticky navbar from overlapping anchored sections

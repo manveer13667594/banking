@@ -626,7 +626,7 @@ async function handleSupportForm(event) {
 function toggleFAQ(element) { element.parentElement.classList.toggle('open'); }
 function handleStartChat()  { showToast('Live chat coming soon!', 'info'); }
 function handleCallSupport(){ showToast('Call 1-800-BANK-NOW for support', 'info'); }
-function handleEmailSupport(){ showToast('Email: support@bankname.com', 'info'); }
+function handleEmailSupport(){ showToast('Email: support@primbank.com', 'info'); }
 function handleTicketStatus(){ document.getElementById('my-tickets-list')?.scrollIntoView({ behavior:'smooth' }); }
 
 // ============ UTILITY FUNCTIONS ============
