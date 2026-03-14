@@ -127,3 +127,7 @@ exports.getAllTransactions = async (req, res) => {
     res.json({ total, page: pageNum, pages: Math.ceil(total / limitNum), transactions });
   } catch (err) { res.status(500).json({ error: err.message }); }
 };
+
+function generateReferenceNumber() {
+  return 'TXN' + Date.now().toString(36).toUpperCase() + Math.floor(Math.random() * 90000 + 10000);
+}

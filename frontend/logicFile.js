@@ -221,9 +221,7 @@ function renderAccounts(accounts) {
         </div>
       </div>
       <div class="account-card-actions">
-        <button class="btn-secondary" onclick="openDepositModal('${acc._id}','${acc.accountNumber}')">💰 Deposit</button>
-        <button class="btn-secondary" onclick="openWithdrawModal('${acc._id}','${acc.accountNumber}',${acc.balance})">💸 Withdraw</button>
-        <button class="btn-secondary" onclick="window.location.href='../transactionPage/transactions.html'">View Transactions</button>
+       <button class="btn-secondary" onclick="window.location.href='../transactionPage/transactions.html'">View Transactions</button>
       </div>`;
     container.appendChild(card);
   });

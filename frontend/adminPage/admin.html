@@ -25,13 +25,25 @@
         .badge-rejected { background:#fee2e2; color:#991b1b; }
         .badge-open     { background:#fef3c7; color:#92400e; }
         .badge-resolved { background:#dcfce7; color:#166534; }
+        .badge-transfer { background:#e0e7ff; color:#3730a3; }
         .btn-sm { padding:.3rem .75rem; border-radius:.4rem; border:none; cursor:pointer; font-size:.8rem; font-weight:500; }
-        .btn-approve { background:#16a34a; color:white; }
-        .btn-reject  { background:#dc2626; color:white; }
-        .btn-reply   { background:#3b82f6; color:white; }
+        .btn-approve  { background:#16a34a; color:white; }
+        .btn-reject   { background:#dc2626; color:white; }
+        .btn-reply    { background:#3b82f6; color:white; }
+        .btn-transfer { background:#7c3aed; color:white; }
         .section-card { background:white; border-radius:.75rem; padding:1.25rem; margin-bottom:1rem; box-shadow:0 1px 4px rgba(0,0,0,.08); }
         .reply-form { margin-top:.75rem; display:none; }
         .reply-form textarea { width:100%; padding:.5rem; border:1px solid #d1d5db; border-radius:.5rem; resize:vertical; font-size:.85rem; }
+        .section-title { font-size:1rem; font-weight:600; color:#1f2937; margin:1.5rem 0 .75rem; padding-bottom:.4rem; border-bottom:2px solid #e5e7eb; }
+        .txn-tabs { display:flex; gap:.5rem; margin-bottom:1.25rem; }
+        .txn-tab { padding:.45rem 1.1rem; border-radius:.5rem; border:1px solid #d1d5db; background:white; cursor:pointer; font-weight:500; font-size:.85rem; }
+        .txn-tab.active { background:#1f2937; color:white; border-color:#1f2937; }
+        .txn-form { display:none; }
+        .txn-form.active { display:block; }
+        .form-group { margin-bottom:.85rem; }
+        .form-group label { display:block; font-size:.85rem; font-weight:500; color:#374151; margin-bottom:.35rem; }
+        .form-input { width:100%; padding:.6rem; border:1px solid #d1d5db; border-radius:.5rem; font-size:.85rem; box-sizing:border-box; }
+        .form-input:focus { outline:none; border-color:#6366f1; box-shadow:0 0 0 2px rgba(99,102,241,.15); }
     </style>
 </head>
 <body class="dashboard-page">
@@ -42,11 +54,14 @@
             <span> Admin</span>
         </div></div>
         <nav class="sidebar-menu">
-            <a href="admin.html" class="menu-item active"><span class="menu-icon">📊</span><span>Dashboard</span></a>
-            <a href="#" class="menu-item" onclick="showPanel('loans')"><span class="menu-icon">📋</span><span>Loans</span></a>
-            <a href="#" class="menu-item" onclick="showPanel('support')"><span class="menu-icon">🎫</span><span>Support Tickets</span></a>
-            <a href="#" class="menu-item" onclick="showPanel('users')"><span class="menu-icon">👥</span><span>Users</span></a>
-            <a href="#" class="menu-item" onclick="showPanel('transactions')"><span class="menu-icon">💸</span><span>Transactions</span></a>
+            <a href="admin.html" class="menu-item active" onclick="showPanel('dashboard'); setActive(this)">
+                <span class="menu-icon">📊</span><span>Dashboard</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showPanel('loans'); setActive(this)"><span class="menu-icon">📋</span><span>Loans</span></a>
+            <a href="#" class="menu-item" onclick="showPanel('support'); setActive(this)"><span class="menu-icon">🎫</span><span>Support Tickets</span></a>
+            <a href="#" class="menu-item" onclick="showPanel('users'); setActive(this)"><span class="menu-icon">👥</span><span>Users</span></a>
+            <a href="#" class="menu-item" onclick="showPanel('transactions'); setActive(this)"><span class="menu-icon">💸</span><span>Transactions</span></a>
+            <a href="#" class="menu-item" onclick="showPanel('manual-txn'); setActive(this)"><span class="menu-icon">🛠️</span><span>Manual Txn</span></a>
             <a href="#" class="menu-item" onclick="adminLogout()"><span class="menu-icon">🚪</span><span>Logout</span></a>
         </nav>
     </aside>
@@ -59,8 +74,8 @@
         </header>
         <div class="content-wrapper">
 
-            <!-- Stats (always visible) -->
-            <div class="stat-grid" id="stats-grid">
+            <!-- Stats -->
+            <div class="stat-grid" id="stats-grid" style="display:none">
                 <div class="stat-card"><div class="stat-val" id="s-users">-</div><div class="stat-lbl">Total Customers</div></div>
                 <div class="stat-card"><div class="stat-val" id="s-accounts">-</div><div class="stat-lbl">Total Accounts</div></div>
                 <div class="stat-card"><div class="stat-val" id="s-txns">-</div><div class="stat-lbl">Transactions</div></div>
@@ -84,43 +99,135 @@
             <!-- Users Panel -->
             <div id="panel-users" class="admin-panel">
                 <h3 style="margin-bottom:1rem">Customers</h3>
-                <div style="overflow-x:auto"><table class="data-table" id="users-table">
-                    <thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Status</th></tr></thead>
-                    <tbody></tbody>
-                </table></div>
+                <div style="overflow-x:auto">
+                    <table class="data-table" id="users-table">
+                        <thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Status</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <p class="section-title">All Accounts</p>
+                <div style="overflow-x:auto">
+                    <table class="data-table" id="users-accounts-table">
+                        <thead><tr><th>Account #</th><th>Type</th><th>Owner</th><th>Balance</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
 
-            <!-- Manual Transactions Panel -->
+            <!-- Transactions Panel -->
             <div id="panel-transactions" class="admin-panel">
+                <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap">
+                    <h3 style="margin:0">All Transactions</h3>
+                    <select id="txn-filter-type" onchange="loadTransactions(1)"
+                        style="padding:.4rem .75rem;border:1px solid #d1d5db;border-radius:.5rem;font-size:.85rem;margin-left:auto">
+                        <option value="">All Types</option>
+                        <option value="deposit">Deposit</option>
+                        <option value="withdrawal">Withdrawal</option>
+                        <option value="transfer">Transfer</option>
+                    </select>
+                    <span id="txn-count" style="font-size:.85rem;color:#6b7280"></span>
+                </div>
+                <div style="overflow-x:auto">
+                    <table class="data-table" id="txns-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th><th>Type</th><th>From Account</th>
+                                <th>To Account</th><th>Amount</th><th>Description</th><th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="txn-pagination" style="display:flex;gap:.5rem;margin-top:1rem;justify-content:center;flex-wrap:wrap"></div>
+            </div>
+
+            <!-- Manual Txn Panel -->
+            <div id="panel-manual-txn" class="admin-panel">
                 <h3 style="margin-bottom:1rem">Manual Transaction</h3>
-                <div class="section-card" style="max-width:480px">
-                    <p style="color:#6b7280;margin-bottom:1rem;font-size:.9rem">Manually deposit or withdraw funds from any account.</p>
-                    <div class="form-group">
-                        <label>Account ID</label>
-                        <input type="text" id="admin-account-id" placeholder="Paste account _id from database"
-                            style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:.5rem">
-                    </div>
-                    <div class="form-group">
-                        <label>Amount ($)</label>
-                        <input type="number" id="admin-amount" placeholder="Enter amount"
-                            style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:.5rem">
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <input type="text" id="admin-desc" placeholder="Reason for transaction"
-                            style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:.5rem">
-                    </div>
-                    <div style="display:flex;gap:.75rem;margin-top:1rem">
+
+                <!-- Sub-tabs -->
+                <div class="txn-tabs">
+                    <button class="txn-tab active" onclick="switchTxnTab('deposit',  this)">💰 Deposit</button>
+                    <button class="txn-tab"        onclick="switchTxnTab('withdraw', this)">💸 Withdraw</button>
+                    <button class="txn-tab"        onclick="switchTxnTab('transfer', this)">🔁 Transfer</button>
+                </div>
+
+                <!-- Deposit Form -->
+                <div id="txn-form-deposit" class="txn-form active">
+                    <div class="section-card" style="max-width:480px">
+                        <p style="color:#6b7280;margin-bottom:1rem;font-size:.9rem">Deposit funds into any account.</p>
+                        <div class="form-group">
+                            <label>Account ID or Account Number</label>
+                            <input type="text" id="dep-account" class="form-input" placeholder="Enter Account ID or Account Number">
+                        </div>
+                        <div class="form-group">
+                            <label>Amount ($)</label>
+                            <input type="number" id="dep-amount" class="form-input" placeholder="Enter amount">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" id="dep-desc" class="form-input" placeholder="Reason for deposit">
+                        </div>
                         <button class="btn-primary" onclick="adminManualTxn('deposit')">💰 Deposit</button>
+                    </div>
+                </div>
+
+                <!-- Withdraw Form -->
+                <div id="txn-form-withdraw" class="txn-form">
+                    <div class="section-card" style="max-width:480px">
+                        <p style="color:#6b7280;margin-bottom:1rem;font-size:.9rem">Withdraw funds from any account.</p>
+                        <div class="form-group">
+                            <label>Account ID or Account Number</label>
+                            <input type="text" id="wdr-account" class="form-input" placeholder="Enter Account ID or Account Number">
+                        </div>
+                        <div class="form-group">
+                            <label>Amount ($)</label>
+                            <input type="number" id="wdr-amount" class="form-input" placeholder="Enter amount">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" id="wdr-desc" class="form-input" placeholder="Reason for withdrawal">
+                        </div>
                         <button class="btn-secondary" onclick="adminManualTxn('withdraw')">💸 Withdraw</button>
                     </div>
                 </div>
-                <div style="margin-top:1.5rem">
-                    <h4 style="margin-bottom:1rem">All Accounts</h4>
-                    <div style="overflow-x:auto"><table class="data-table" id="accounts-table">
-                        <thead><tr><th>Account #</th><th>Type</th><th>Owner</th><th>Balance</th><th>Account ID</th></tr></thead>
+
+                <!-- Transfer Form -->
+                <div id="txn-form-transfer" class="txn-form">
+                    <div class="section-card" style="max-width:480px">
+                        <p style="color:#6b7280;margin-bottom:1rem;font-size:.9rem">Transfer funds between any two accounts.</p>
+                        <div class="form-group">
+                            <label>From — Account ID or Account Number</label>
+                            <input type="text" id="trf-from" class="form-input" placeholder="Sender Account ID or Number">
+                        </div>
+                        <div class="form-group">
+                            <label>To — Account ID or Account Number</label>
+                            <input type="text" id="trf-to" class="form-input" placeholder="Recipient Account ID or Number">
+                        </div>
+                        <div class="form-group">
+                            <label>Amount ($)</label>
+                            <input type="number" id="trf-amount" class="form-input" placeholder="Enter amount">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" id="trf-desc" class="form-input" placeholder="Reason for transfer">
+                        </div>
+                        <button class="btn-sm btn-transfer" style="padding:.5rem 1.25rem;font-size:.9rem" onclick="adminTransfer()">🔁 Transfer</button>
+                    </div>
+                </div>
+
+                <!-- Accounts Reference Table -->
+                <p class="section-title">
+                    All Accounts
+                    <span style="font-size:.8rem;font-weight:400;color:#6b7280">— click any Account # or ID to fill the active form</span>
+                </p>
+                <div style="overflow-x:auto">
+                    <table class="data-table" id="accounts-table">
+                        <thead>
+                            <tr><th>Account #</th><th>Type</th><th>Owner</th><th>Balance</th><th>Account ID</th></tr>
+                        </thead>
                         <tbody></tbody>
-                    </table></div>
+                    </table>
                 </div>
             </div>
 
@@ -129,23 +236,52 @@
 </div>
 <script>
 const API = 'http://localhost:5000/api';
-function tok() { return localStorage.getItem('token'); }
+function tok()  { return localStorage.getItem('token'); }
 function hdrs() { return { 'Content-Type':'application/json', 'Authorization':'Bearer '+tok() }; }
 
 function adminLogout() { localStorage.clear(); window.location.replace('../loginPage/login.html'); }
 
+function setActive(el) {
+    document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+    if (el) el.classList.add('active');
+}
+
 function showPanel(name) {
+    document.getElementById('stats-grid').style.display = name === 'dashboard' ? 'grid' : 'none';
     document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
     const panel = document.getElementById('panel-' + name);
     if (panel) panel.classList.add('active');
-    const titles = { loans:'Loan Applications', support:'Support Tickets', users:'Customers', transactions:'Manual Transactions' };
-    document.getElementById('panel-title').textContent = titles[name] || 'Admin Dashboard';
-    if (name === 'loans') loadLoans();
-    if (name === 'support') loadTickets();
-    if (name === 'users') loadUsers();
-    if (name === 'transactions') loadAccounts();
+
+    const link = document.querySelector(`.menu-item[onclick*="showPanel('${name}')"]`);
+    if (link) setActive(link);
+
+    const titles = {
+        dashboard:    'Admin Dashboard',
+        loans:        'Loan Applications',
+        support:      'Support Tickets',
+        users:        'Customers',
+        transactions: 'All Transactions',
+        'manual-txn': 'Manual Transaction'
+    };
+    document.getElementById('panel-title').textContent = titles[name] || 'Admin Panel';
+
+    if (name === 'dashboard')    loadStats();
+    if (name === 'loans')        loadLoans();
+    if (name === 'support')      loadTickets();
+    if (name === 'users')        loadUsers();
+    if (name === 'transactions') loadTransactions(1);
+    if (name === 'manual-txn')   loadAccounts();
 }
 
+// ── Manual Txn sub-tabs ───────────────────────────────────────────────────────
+function switchTxnTab(name, el) {
+    document.querySelectorAll('.txn-tab').forEach(t  => t.classList.remove('active'));
+    document.querySelectorAll('.txn-form').forEach(f => f.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('txn-form-' + name).classList.add('active');
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────────
 async function loadStats() {
     const r = await fetch(API+'/admin/stats', { headers: hdrs() });
     const d = await r.json();
@@ -157,6 +293,7 @@ async function loadStats() {
     document.getElementById('s-balance').textContent  = '$' + Number(d.totalBalance||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
+// ── Loans ─────────────────────────────────────────────────────────────────────
 async function loadLoans() {
     const r = await fetch(API+'/admin/loans', { headers: hdrs() });
     const d = await r.json();
@@ -172,7 +309,7 @@ async function loadLoans() {
             <div>
                 <strong>${l.user?.fullName || 'Unknown'}</strong>
                 <span style="color:#6b7280;font-size:.8rem;margin-left:.5rem">${l.user?.email || ''}</span><br>
-                <span style="font-size:.85rem">Principal: <strong>$${l.principal.toLocaleString()}</strong> &nbsp;|&nbsp; 
+                <span style="font-size:.85rem">Principal: <strong>$${l.principal.toLocaleString()}</strong> &nbsp;|&nbsp;
                 Term: ${l.termMonths}mo &nbsp;|&nbsp; Rate: ${l.interestRate}% &nbsp;|&nbsp; EMI: $${l.emi} &nbsp;|&nbsp; Purpose: ${l.description||'N/A'}</span><br>
                 <span style="margin-top:.25rem;display:inline-block">${statusBadge}</span>
                 <span style="font-size:.75rem;color:#9ca3af;margin-left:.5rem">${new Date(l.createdAt).toLocaleDateString()}</span>
@@ -193,6 +330,7 @@ async function loanAction(loanId, action) {
     loadLoans(); loadStats();
 }
 
+// ── Support Tickets ───────────────────────────────────────────────────────────
 async function loadTickets() {
     const r = await fetch(API+'/admin/tickets', { headers: hdrs() });
     const d = await r.json();
@@ -234,7 +372,7 @@ function toggleReplyForm(id) {
 }
 
 async function sendReply(ticketId) {
-    const reply  = document.getElementById('reply-text-' + ticketId).value;
+    const reply  = document.getElementById('reply-text-'   + ticketId).value;
     const status = document.getElementById('reply-status-' + ticketId).value;
     if (!reply.trim()) { showNotif('Reply cannot be empty', 'error'); return; }
     const r = await fetch(`${API}/admin/tickets/${ticketId}/reply`, {
@@ -245,20 +383,92 @@ async function sendReply(ticketId) {
     loadTickets(); loadStats();
 }
 
+// ── Users + accounts ──────────────────────────────────────────────────────────
 async function loadUsers() {
-    const r = await fetch(API+'/admin/users', { headers: hdrs() });
-    const d = await r.json();
+    const [ru, ra] = await Promise.all([
+        fetch(API+'/admin/users',    { headers: hdrs() }),
+        fetch(API+'/admin/accounts', { headers: hdrs() })
+    ]);
+    const du = await ru.json();
+    const da = await ra.json();
+
     const tbody = document.querySelector('#users-table tbody');
     tbody.innerHTML = '';
-    (d.users || []).forEach(u => {
+    (du.users || []).forEach(u => {
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${u.fullName}</td><td>${u.email}</td>
             <td>${new Date(u.createdAt).toLocaleDateString()}</td>
             <td><span class="badge ${u.isActive ? 'badge-active' : 'badge-rejected'}">${u.isActive ? 'Active' : 'Inactive'}</span></td>`;
         tbody.appendChild(tr);
     });
+
+    const atbody = document.querySelector('#users-accounts-table tbody');
+    atbody.innerHTML = '';
+    (da.accounts || []).forEach(a => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${a.accountNumber}</td><td>${a.accountType}</td>
+            <td>${a.user?.fullName || 'N/A'}</td>
+            <td>$${Number(a.balance).toLocaleString('en-US',{minimumFractionDigits:2})}</td>`;
+        atbody.appendChild(tr);
+    });
 }
 
+// ── All Transactions (paginated) ──────────────────────────────────────────────
+let txnCurrentPage = 1;
+
+async function loadTransactions(page = 1) {
+    txnCurrentPage = page;
+    const type = document.getElementById('txn-filter-type')?.value || '';
+    const url  = `${API}/transactions?page=${page}&limit=15${type ? '&type='+type : ''}`;
+    const r    = await fetch(url, { headers: hdrs() });
+    const d    = await r.json();
+
+    document.getElementById('txn-count').textContent =
+        `${d.total || 0} total transaction${(d.total||0) !== 1 ? 's' : ''}`;
+
+    const tbody = document.querySelector('#txns-table tbody');
+    tbody.innerHTML = '';
+
+    if (!d.transactions || d.transactions.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#6b7280;padding:2rem">No transactions found.</td></tr>';
+    } else {
+        d.transactions.forEach(t => {
+            const typeBadge = {
+                deposit:    '<span class="badge badge-active">Deposit</span>',
+                withdrawal: '<span class="badge badge-rejected">Withdrawal</span>',
+                transfer:   '<span class="badge badge-transfer">Transfer</span>'
+            }[t.type] || `<span class="badge badge-pending">${t.type}</span>`;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${new Date(t.createdAt).toLocaleDateString()}</td>
+                <td>${typeBadge}</td>
+                <td style="font-family:monospace;font-size:.78rem">${t.fromAccount?.accountNumber || '—'}</td>
+                <td style="font-family:monospace;font-size:.78rem">${t.toAccount?.accountNumber  || '—'}</td>
+                <td><strong>$${Number(t.amount).toLocaleString('en-US',{minimumFractionDigits:2})}</strong></td>
+                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+                    title="${t.description||''}">${t.description || '—'}</td>
+                <td><span class="badge ${t.status === 'completed' ? 'badge-active' : 'badge-pending'}">${t.status}</span></td>`;
+            tbody.appendChild(tr);
+        });
+    }
+
+    const pages = d.pages || 1;
+    const pg    = document.getElementById('txn-pagination');
+    pg.innerHTML = '';
+    if (pages > 1) {
+        for (let i = 1; i <= pages; i++) {
+            const btn = document.createElement('button');
+            btn.textContent      = i;
+            btn.className        = 'btn-sm';
+            btn.style.background = i === page ? '#1f2937' : '#f3f4f6';
+            btn.style.color      = i === page ? 'white'   : '#374151';
+            btn.onclick = () => loadTransactions(i);
+            pg.appendChild(btn);
+        }
+    }
+}
+
+// ── Accounts reference table ──────────────────────────────────────────────────
 async function loadAccounts() {
     const r = await fetch(API+'/admin/accounts', { headers: hdrs() });
     const d = await r.json();
@@ -266,40 +476,110 @@ async function loadAccounts() {
     tbody.innerHTML = '';
     (d.accounts || []).forEach(a => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${a.accountNumber}</td><td>${a.accountType}</td>
-            <td>${a.user?.fullName||'N/A'}</td>
+        tr.innerHTML = `
+            <td style="cursor:pointer;color:#3b82f6;font-weight:500"
+                onclick="fillActiveForm('${a.accountNumber}')"
+                title="Click to fill active form">${a.accountNumber}</td>
+            <td>${a.accountType}</td>
+            <td>${a.user?.fullName || 'N/A'}</td>
             <td>$${Number(a.balance).toLocaleString('en-US',{minimumFractionDigits:2})}</td>
-            <td style="font-family:monospace;font-size:.75rem">${a._id}</td>`;
+            <td style="font-family:monospace;font-size:.75rem;cursor:pointer;color:#6366f1"
+                onclick="fillActiveForm('${a._id}')"
+                title="Click to fill active form">${a._id}</td>`;
         tbody.appendChild(tr);
     });
 }
 
-async function adminManualTxn(type) {
-    const accountId = document.getElementById('admin-account-id').value.trim();
-    const amount    = parseFloat(document.getElementById('admin-amount').value);
-    const desc      = document.getElementById('admin-desc').value;
-    if (!accountId || !amount || amount <= 0) { showNotif('Fill all fields with valid values', 'error'); return; }
-    const r = await fetch(`${API}/admin/${type}`, {
-        method:'POST', headers: hdrs(), body: JSON.stringify({ accountId, amount, description: desc })
-    });
-    const d = await r.json();
-    if (r.ok) { showNotif(d.message || 'Done!'); loadAccounts(); loadStats(); }
-    else { showNotif(d.message || d.error || 'Failed', 'error'); }
+// Fills the first empty text input in the currently active form tab
+function fillActiveForm(value) {
+    const activeForm = document.querySelector('.txn-form.active');
+    if (!activeForm) return;
+    const inputs = Array.from(activeForm.querySelectorAll('input[type="text"].form-input'));
+    const target = inputs.find(i => !i.value.trim()) || inputs[0];
+    if (target) {
+        target.value = value;
+        target.focus();
+        showNotif('Filled: ' + (target.previousElementSibling?.textContent?.trim() || 'field'));
+    }
 }
 
+// ── Deposit / Withdraw ────────────────────────────────────────────────────────
+async function adminManualTxn(type) {
+    const isDeposit = type === 'deposit';
+    const prefix    = isDeposit ? 'dep' : 'wdr';
+    const accountInput = document.getElementById(prefix + '-account').value.trim();
+    const amount       = Number(document.getElementById(prefix + '-amount').value);
+    const desc         = document.getElementById(prefix + '-desc').value.trim();
+
+    if (!accountInput || !amount || amount <= 0) {
+        showNotif('Enter valid account and amount', 'error');
+        return;
+    }
+
+    const res = await fetch(API + (isDeposit ? '/admin/deposit' : '/admin/withdraw'), {
+        method: 'POST', headers: hdrs(),
+        body: JSON.stringify({ accountIdentifier: accountInput, amount, description: desc })
+    });
+    const data = await res.json();
+    if (!res.ok) { showNotif(data.message || data.error || 'Transaction failed', 'error'); return; }
+
+    showNotif(data.message || 'Transaction successful');
+    document.getElementById(prefix + '-account').value = '';
+    document.getElementById(prefix + '-amount').value  = '';
+    document.getElementById(prefix + '-desc').value    = '';
+    loadAccounts();
+    if (document.getElementById('stats-grid').style.display === 'grid') loadStats();
+}
+
+// ── Admin Transfer ────────────────────────────────────────────────────────────
+async function adminTransfer() {
+    const fromInput = document.getElementById('trf-from').value.trim();
+    const toInput   = document.getElementById('trf-to').value.trim();
+    const amount    = Number(document.getElementById('trf-amount').value);
+    const desc      = document.getElementById('trf-desc').value.trim();
+
+    if (!fromInput || !toInput || !amount || amount <= 0) {
+        showNotif('Fill in both accounts and a valid amount', 'error');
+        return;
+    }
+    if (fromInput === toInput) {
+        showNotif('From and To accounts cannot be the same', 'error');
+        return;
+    }
+
+    const res = await fetch(API + '/admin/transfer', {
+        method: 'POST', headers: hdrs(),
+        body: JSON.stringify({ fromIdentifier: fromInput, toIdentifier: toInput, amount, description: desc })
+    });
+    const data = await res.json();
+    if (!res.ok) { showNotif(data.message || data.error || 'Transfer failed', 'error'); return; }
+
+    showNotif(data.message || 'Transfer successful');
+    document.getElementById('trf-from').value   = '';
+    document.getElementById('trf-to').value     = '';
+    document.getElementById('trf-amount').value = '';
+    document.getElementById('trf-desc').value   = '';
+    loadAccounts();
+    if (document.getElementById('stats-grid').style.display === 'grid') loadStats();
+}
+
+// ── Notification ──────────────────────────────────────────────────────────────
 function showNotif(msg, type='success') {
     const n = document.createElement('div');
-    n.style.cssText = `position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;padding:.75rem 1.25rem;border-radius:.75rem;color:white;font-weight:500;font-size:.9rem;background:${type==='error'?'#dc2626':'#16a34a'}`;
-    n.textContent = msg; document.body.appendChild(n);
+    n.style.cssText = `position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;padding:.75rem 1.25rem;
+        border-radius:.75rem;color:white;font-weight:500;font-size:.9rem;
+        background:${type==='error'?'#dc2626':'#16a34a'}`;
+    n.textContent = msg;
+    document.body.appendChild(n);
     setTimeout(() => n.remove(), 3500);
 }
 
-// Init
+// ── Init ──────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     const role = localStorage.getItem('userRole');
     if (role !== 'admin') { window.location.replace('../loginPage/login.html'); return; }
     document.getElementById('admin-name').textContent = localStorage.getItem('userFullName') || 'Admin';
-    loadStats();
+    showPanel('dashboard');
 });
 </script>
 </body>
